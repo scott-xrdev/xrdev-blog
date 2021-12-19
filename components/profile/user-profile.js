@@ -13,6 +13,10 @@ const UserProfile = () => {
 
 		const data = await response.json();
 		console.log(data);
+
+		// TODO show feedback notification
+
+		// TODO clear password inputs or redirect or something
 	};
 
 	return (
