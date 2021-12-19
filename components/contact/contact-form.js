@@ -1,14 +1,23 @@
-import { useRef } from 'react';
+import { useRef, useContext } from 'react';
 
+import NotificationContext from '../../store/notification-context';
 import classes from './contact-form.module.css';
+import { sendContactData } from '../../lib/contact-util';
 
 const ContactForm = () => {
 	const emailInputRef = useRef();
 	const nameInputRef = useRef();
 	const messageInputRef = useRef();
+	const { showNotification } = useContext(NotificationContext);
 
-	const sendMessageHandler = (event) => {
+	const sendMessageHandler = async (event) => {
 		event.preventDefault();
+
+		showNotification({
+			title: 'Sending...',
+			message: 'Your message is being sent',
+			status: 'pending',
+		});
 
 		const enteredEmail = emailInputRef.current.value;
 		const enteredName = nameInputRef.current.value;
@@ -16,17 +25,31 @@ const ContactForm = () => {
 
 		// TODO add client side validation
 
-		fetch('/api/contact', {
-			method: 'POST',
-			body: JSON.stringify({
+		let data;
+		try {
+			data = await sendContactData({
 				email: enteredEmail,
 				name: enteredName,
 				message: enteredMessage,
-			}),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		});
+			});
+
+			showNotification({
+				title: 'Success!',
+				message: 'Your message has been sent',
+				status: 'success',
+			});
+
+			// TODO clear out input fields
+			emailInputRef.current.value = '';
+			nameInputRef.current.value = '';
+			messageInputRef.current.value = '';
+		} catch (error) {
+			showNotification({
+				title: 'Error',
+				message: error.message || 'Something went wrong',
+				status: 'error',
+			});
+		}
 	};
 
 	return (
