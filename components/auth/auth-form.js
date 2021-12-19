@@ -31,6 +31,8 @@ const AuthForm = () => {
 				password: enteredPassword,
 			});
 
+			// TODO add loading feedback while login is being verified
+
 			// TODO add error notification if failed
 
 			if (!result.error) {
@@ -38,10 +40,16 @@ const AuthForm = () => {
 			}
 		} else {
 			try {
+				// TODO add spinner until user created response received
+
 				const result = await createUser(enteredEmail, enteredPassword);
 				console.log(result);
 
-				// TODO add user feedback notifications
+				// automatically change to isLogin
+				setIsLogin(true);
+				passwordInputRef.current.value = '';
+
+				// TODO send a notification to log in with new credentials
 			} catch (error) {
 				console.log(error);
 			}
