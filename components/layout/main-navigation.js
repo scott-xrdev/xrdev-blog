@@ -4,6 +4,10 @@ import Logo from './logo';
 import classes from './main-navigation.module.css';
 
 const MainNavigation = () => {
+	const logoutHandler = () => {
+		console.log('logout button clicked');
+	};
+
 	return (
 		<header className={classes.header}>
 			<Link href="/">
@@ -18,6 +22,15 @@ const MainNavigation = () => {
 					</li>
 					<li>
 						<Link href="/contact">Contact</Link>
+					</li>
+					<li>
+						<Link href="/profile">Profile</Link>
+					</li>
+					<li>
+						<Link href="/auth">Login</Link>
+					</li>
+					<li>
+						<button onClick={logoutHandler}>Logout</button>
 					</li>
 				</ul>
 			</nav>
